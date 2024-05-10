@@ -65,31 +65,50 @@ const images = [
 ];
 
 const galleryEl = document.querySelector('.gallery');
-const galleryListArray = [];
+
+// const galleryListArray = [];
+// images.forEach(({ preview, original, description }) => {
+//   const galleryItemEl = document.createElement('li');
+//   const galleryImgEl = document.createElement('img');
+//   galleryImgEl.classList.add('gallery-image');
+//   galleryImgEl.setAttribute('src', preview);
+//   galleryImgEl.setAttribute('alt', description);
+//   galleryImgEl.setAttribute('data-origin', original);
+
+//   galleryItemEl.append(galleryImgEl);
+//   galleryListArray.push(galleryItemEl);
+// });
+
+let galleryLayoutString = ``;
 
 images.forEach(({ preview, original, description }) => {
-  const galleryItemEl = document.createElement('li');
-  const galleryImgEl = document.createElement('img');
-  galleryImgEl.classList.add('gallery-image');
-  galleryImgEl.setAttribute('src', preview);
-  galleryImgEl.setAttribute('alt', description);
-  galleryImgEl.setAttribute('data-origin', original);
-
-  galleryItemEl.append(galleryImgEl);
-  galleryListArray.push(galleryItemEl);
+  galleryLayoutString += `<li class="gallery-item">
+  <a class="gallery-link" href="${original}">
+    <img
+      class="gallery-image"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
+    />
+  </a>
+</li>`;
 });
 
-galleryEl.append(...galleryListArray);
+galleryEl.innerHTML = galleryLayoutString;
 
 galleryEl.addEventListener('click', event => {
-  if (event.target === event.currentTarget) {
+  event.preventDefault();
+  const targetImg = event.target;
+  if (targetImg.nodeName !== 'IMG') {
     return;
   }
+
+  event.preventDefault;
 
   basicLightbox
     .create(
       `
-		<img width="1400" height="900" src="${event.target.dataset.origin}">
+		<img width="1400" height="900" src="${event.target.dataset.source}">
 	`
     )
     .show();
